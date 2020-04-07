@@ -20,7 +20,7 @@ class DefenseMessage {
 
   void updateDefenseMessages() async {
     var lineSplitter = LineSplitter();
-    _defenseMessages = lineSplitter.convert(await http.read(url));
+    _defenseMessages = lineSplitter.convert(await http.read(url)) ?? _defenseMessages;
     _lastUpdated = DateTime.now();
   }
 
