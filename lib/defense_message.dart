@@ -5,24 +5,34 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 
 
-Random rng;
+
 
 class DefenseMessage {
 
   static const String _firstName = 'first_name';
+  static const int _updateDifference = 24;
 
+  String url;
+
+  Random _rng;
+  DateTime _lastUpdated;
   List<String> _defenseMessages = <String>[];
 
-  void updateDefenseMessages(String url) async {
+  void updateDefenseMessages() async {
     var lineSplitter = LineSplitter();
     _defenseMessages = lineSplitter.convert(await http.read(url));
+    _lastUpdated = DateTime.now();
   }
 
   String getDefenseMessage(message){
-    return _defenseMessages[rng.nextInt(_defenseMessages.length)].replaceAll(_firstName, message.from.first_name);
+    // update list of responses every 24 hours
+    if (_lastUpdated.difference(DateTime.now()).inHours >= _updateDifference){
+      updateDefenseMessages();
+    }
+    return _defenseMessages[_rng.nextInt(_defenseMessages.length)].replaceAll(_firstName, message.from.first_name);
   }
 
-  DefenseMessage() {
-    rng = Random();
+  DefenseMessage(this.url) {
+    _rng = Random();
   }
 }

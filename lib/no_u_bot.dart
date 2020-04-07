@@ -4,11 +4,12 @@ import 'package:teledart/model.dart';
 
 import 'package:no_u_bot/defense_message.dart';
 
-DefenseMessage defenseMessage = DefenseMessage();
+DefenseMessage defenseMessage;
 
 void init(String url) async{
 
-  await defenseMessage.updateDefenseMessages(url);
+  defenseMessage = DefenseMessage(url);
+  await defenseMessage.updateDefenseMessages();
 
   var teledart = TeleDart(
       Telegram('***REMOVED***'), Event());
