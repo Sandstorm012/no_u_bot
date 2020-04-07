@@ -1,27 +1,28 @@
-import "dart:html" ;
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
-class DefenseMessage{
-
-
-  List<String> defenseMessages;
-  String url;
+import 'package:http/http.dart' as http;
 
 
+Random rng;
 
-  DefenseMessage(this.url){
-    HttpClient().getUrl(Uri.parse(url))
-        .then((HttpClientRequest request) => request.close())
-        .then((HttpClientResponse response) => response.transform(Utf8Decoder())
-        .listen(print));
+class DefenseMessage {
+
+  static const String _firstName = 'first_name';
+
+  List<String> _defenseMessages = <String>[];
+
+  void updateDefenseMessages(String url) async {
+    var lineSplitter = LineSplitter();
+    _defenseMessages = lineSplitter.convert(await http.read(url));
   }
 
+  String getDefenseMessage(message){
+    return _defenseMessages[rng.nextInt(_defenseMessages.length)].replaceAll(_firstName, message.from.first_name);
+  }
 
-
-
-
-
-
-
+  DefenseMessage() {
+    rng = Random();
+  }
 }
