@@ -16,14 +16,16 @@ class DefenseMessage {
 
   void updateDefenseMessages() async {
     _defenseMessages =
-        LineSplitter().convert(await http.read(url)) ?? _defenseMessages;
+        LineSplitter().convert(await http.read(url).timeout(Duration(minutes: 1)).catchError((error) => print(error))) ?? _defenseMessages;
     _lastUpdated = DateTime.now();
+    print('defense message update complete at ${_lastUpdated.toIso8601String()}');
   }
 
   String getDefenseMessage(message) {
     // update list of responses every 24 hours
     if (_lastUpdated.difference(DateTime.now()).inHours >= _updateDifference) {
       updateDefenseMessages();
+      print('updating defense messages...');
     }
     return _defenseMessages[_rng.nextInt(_defenseMessages.length)]
         .replaceAll(_firstName, message.from.first_name);

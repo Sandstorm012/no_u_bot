@@ -16,7 +16,11 @@ void init(String url) async {
   teleDart
       .onMessage()
       .where((message) => (message.text?.contains('no u')) ?? false)
-      .listen((message) => teleDart.replyMessage(message, 'no u'));
+      .listen((message) => {
+            teleDart.replyMessage(message, 'no u'),
+            print(
+                '${message.from.username} sent the bot this message: ${message.text} at ${DateTime.now().toIso8601String()}')
+          });
   teleDart
       .onMessage(keyword: 'bot')
       .where((message) =>
@@ -28,6 +32,27 @@ void init(String url) async {
           message.text.toLowerCase().contains('bitch') ||
           message.text.toLowerCase().contains('shit') ||
           message.text.toLowerCase().contains('cunt'))
-      .listen((message) => teleDart.replyMessage(
-          message, defenseMessage.getDefenseMessage(message)));
+      .listen((message) => {
+            teleDart.replyMessage(
+                message, defenseMessage.getDefenseMessage(message)),
+            print(
+                '${message.from.username} sent the bot this message: ${message.text} at ${DateTime.now().toIso8601String()}')
+          });
+  teleDart
+      .onMessage(keyword: 'Bot')
+      .where((message) =>
+          message.text.toLowerCase().contains('stfu') ||
+          message.text.toLowerCase().contains('stupid') ||
+          message.text.toLowerCase().contains('idiot') ||
+          message.text.toLowerCase().contains('dumb') ||
+          message.text.toLowerCase().contains('fuck') ||
+          message.text.toLowerCase().contains('bitch') ||
+          message.text.toLowerCase().contains('shit') ||
+          message.text.toLowerCase().contains('cunt'))
+      .listen((message) => {
+            teleDart.replyMessage(
+                message, defenseMessage.getDefenseMessage(message)),
+            print(
+                '${message.from.username} sent the bot this message: ${message.text} at ${DateTime.now().toIso8601String()}')
+          });
 }
