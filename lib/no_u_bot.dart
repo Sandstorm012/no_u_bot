@@ -5,10 +5,8 @@ import 'package:teledart/model.dart';
 import 'defense_message.dart';
 import 'secret.dart';
 
-DefenseMessage defenseMessage;
-
 void init(String url) async {
-  defenseMessage = DefenseMessage(url);
+  var defenseMessage = DefenseMessage(url);
   await defenseMessage.updateDefenseMessages();
 
   var teleDart = TeleDart(Telegram(botKey), Event());
