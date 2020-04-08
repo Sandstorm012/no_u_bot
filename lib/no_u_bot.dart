@@ -30,7 +30,8 @@ void init(String url) async{
       message.text.toLowerCase().contains('dumb') ||
       message.text.toLowerCase().contains('fuck') ||
       message.text.toLowerCase().contains('bitch') ||
-      message.text.toLowerCase().contains('shit'))
+      message.text.toLowerCase().contains('shit')) ||
+      message.text.toLowerCase().contains('cunt')) 
       .listen((message) =>
       teleDart.replyMessage(message,
           defenseMessage.getDefenseMessage(message)));
