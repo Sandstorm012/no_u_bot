@@ -1,1 +1,0 @@
-const String botKey = '629692847:AAHWAZwR4hNqm2dmbQUbQRByGewwEUEmteE';
