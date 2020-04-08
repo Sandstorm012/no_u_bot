@@ -4,11 +4,7 @@ import 'dart:math';
 
 import 'package:http/http.dart' as http;
 
-
-
-
 class DefenseMessage {
-
   static const String _firstName = 'first_name';
   static const int _updateDifference = 24;
 
@@ -20,16 +16,18 @@ class DefenseMessage {
 
   void updateDefenseMessages() async {
     var lineSplitter = LineSplitter();
-    _defenseMessages = lineSplitter.convert(await http.read(url)) ?? _defenseMessages;
+    _defenseMessages =
+        lineSplitter.convert(await http.read(url)) ?? _defenseMessages;
     _lastUpdated = DateTime.now();
   }
 
-  String getDefenseMessage(message){
+  String getDefenseMessage(message) {
     // update list of responses every 24 hours
-    if (_lastUpdated.difference(DateTime.now()).inHours >= _updateDifference){
+    if (_lastUpdated.difference(DateTime.now()).inHours >= _updateDifference) {
       updateDefenseMessages();
     }
-    return _defenseMessages[_rng.nextInt(_defenseMessages.length)].replaceAll(_firstName, message.from.first_name);
+    return _defenseMessages[_rng.nextInt(_defenseMessages.length)]
+        .replaceAll(_firstName, message.from.first_name);
   }
 
   DefenseMessage(this.url) {
