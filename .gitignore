@@ -12,3 +12,4 @@ doc/api/
 
 # Secrets file
 /lib/secret.dart
+/no_u_bot

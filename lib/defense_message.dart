@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:pedantic/pedantic.dart';
+
 import 'package:http/http.dart' as http;
 
 class DefenseMessage {
@@ -14,18 +16,23 @@ class DefenseMessage {
   DateTime _lastUpdated;
   List<String> _defenseMessages = <String>[];
 
-  void updateDefenseMessages() async {
-    _defenseMessages =
-        LineSplitter().convert(await http.read(url).timeout(Duration(minutes: 1)).catchError((error) => print(error))) ?? _defenseMessages;
+  Future<void> updateDefenseMessages() async {
+    var newDefenseMessages = LineSplitter().convert(await http
+        .read(url)
+        .timeout(Duration(minutes: 1))
+        .catchError((error) => print(error)));
+    if (newDefenseMessages.isNotEmpty) {
+      _defenseMessages = newDefenseMessages;
+    }
     _lastUpdated = DateTime.now();
-    print('defense message update complete at ${_lastUpdated.toIso8601String()}');
+    print('defense message update complete');
   }
 
-  String getDefenseMessage(message) {
+  Future<String> getDefenseMessage(message) async {
     // update list of responses every 24 hours
     if (_lastUpdated.difference(DateTime.now()).inHours >= _updateDifference) {
-      updateDefenseMessages();
       print('updating defense messages...');
+      unawaited(updateDefenseMessages());
     }
     return _defenseMessages[_rng.nextInt(_defenseMessages.length)]
         .replaceAll(_firstName, message.from.first_name);
